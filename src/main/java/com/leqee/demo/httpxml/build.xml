@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 定义一个工程，默认任务为warFile。 -->
+<project name="antest" default="bind" basedir=".">
+
+  <!-- 定义任务，清空任务：清空原有的class文件，创建新的build路径。 -->
+  <target name="bind">
+    <echo message="Running JiBX binding compiler"></echo>
+    <taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+      <classpath>
+        <fileset dir="C:\Users\leqee\.m2\repository\org\jibx\jibx-bind\1.2.6" includes="*.jar"></fileset>
+      </classpath>
+    </taskdef>
+    <bind></bind>
+  </target>
+
+
+
+</project>
