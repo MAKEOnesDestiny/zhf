@@ -1,9 +1,13 @@
 package com.leqee.demo.httpxml.netty;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 public class HttpXmlResponseEncoder extends AbstractHttpXmlEncoder<HttpXmlResponse> {
@@ -20,4 +24,15 @@ public class HttpXmlResponseEncoder extends AbstractHttpXmlEncoder<HttpXmlRespon
         HttpHeaders.setContentLength(response, result.readableBytes());
         out.add(response);
     }
+
+    @Override
+    protected ByteBuf encode0(ChannelHandlerContext ctx, Object body) throws Exception {
+        File file = ResourceUtils.getFile("src/main/java/com/leqee/demo/httpxml/netty/order.xml");
+        FileInputStream fis = new FileInputStream(file);
+        byte[] data = new byte[fis.available()];
+        fis.read(data);
+        return Unpooled.copiedBuffer(data);
+    }
+
+
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<order orderNumber="123" total="9999.99">
-    <customer customerNumber="123">
+<order orderNumber="321" total="654321.11">
+    <customer customerNumber="321">
       <firstName>周</firstName>
       <lastName>HAOFENG</lastName>
     </customer>

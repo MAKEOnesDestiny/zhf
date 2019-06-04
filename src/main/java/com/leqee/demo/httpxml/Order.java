@@ -1,5 +1,8 @@
 package com.leqee.demo.httpxml;
 
+import lombok.ToString;
+
+@ToString
 public class Order {
 
     private long orderNumber;

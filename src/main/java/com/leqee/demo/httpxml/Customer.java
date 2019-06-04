@@ -1,7 +1,10 @@
 package com.leqee.demo.httpxml;
 
+import lombok.ToString;
+
 import java.util.List;
 
+@ToString
 public class Customer {
 
     private long customerNumber;

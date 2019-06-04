@@ -4,10 +4,12 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class HttpXmlResponse {
 
     private FullHttpResponse response;

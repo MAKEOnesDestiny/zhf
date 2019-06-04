@@ -1,5 +1,8 @@
 package com.leqee.demo.httpxml;
 
+import lombok.ToString;
+
+@ToString
 public enum Shipping {
 
     STANDARD_MAIL,
