@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Netty Client</title>
+</head>
+<script type="text/javascript">
+    var socket;
+    if (!window.WebSocket) {
+        window.WebSocket = window.MozWebSocket;
+    }
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://localhost:8080/websocket");
+        scoket.onmessage = function (event) {
+            var ta = document.getElementById('responseText');
+            ta.value = "";
+            ta.value = event.data;
+        };
+        socket.onopen = function (event) {
+
+        };
+    }
+
+</script>
+<body>
+
+
+</body>
+</html>
