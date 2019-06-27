@@ -2,10 +2,28 @@ package com.leqee.demo.utils;
 
 import java.util.*;
 
-public class SelfCollectionUtils {
+public abstract class SelfCollectionUtil {
+
+    /**
+     * 避免从list获取数据时导致的数组越界以及空指针
+     * @param list
+     * @param index [ 0,list.size() )
+     * @param <E>
+     * @return
+     */
+    public static <E> E getFromListSafely(List<E> list, int index) {
+        if (list == null || index < 0) {
+            return null;
+        }
+        if (index >= list.size()) {
+            return null;
+        }
+        return list.get(index);
+    }
 
     /**
      * Quick call
+     *
      * @param map
      * @return
      */
@@ -15,6 +33,7 @@ public class SelfCollectionUtils {
 
     /**
      * 递归从map中的第一个Map.Entry中获取list,每次只取map的第一个
+     *
      * @param map
      * @param notNull true:如果没找到返回一个空集合  false:返回Null
      * @return
@@ -47,6 +66,7 @@ public class SelfCollectionUtils {
         }
 
         public static void main(String[] args) {
+            test1();
         }
     }
 

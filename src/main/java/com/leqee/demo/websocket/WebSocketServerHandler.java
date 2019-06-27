@@ -100,5 +100,5 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         cause.printStackTrace();
         ctx.close();
     }
-    
+
 }
