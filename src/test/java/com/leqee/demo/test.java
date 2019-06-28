@@ -1,5 +1,7 @@
 package com.leqee.demo;
 
+import org.springframework.util.CollectionUtils;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -9,11 +11,9 @@ import java.util.List;
 public class test {
 
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 11; i++) {
-            list.add(String.valueOf(i));
-        }
-        System.out.println();
+        String a = "1,2,3,4,";
+        List list = CollectionUtils.arrayToList(a.split(","));
+        System.out.println(1);
     }
 
     public static void do1() {

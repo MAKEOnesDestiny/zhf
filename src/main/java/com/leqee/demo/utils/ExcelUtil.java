@@ -3,9 +3,7 @@ package com.leqee.demo.utils;
 import com.leqee.demo.exception.ExceptionPrintUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -72,18 +70,24 @@ public abstract class ExcelUtil {
     public static void main(String[] args) {
         try {
             FileInputStream is = new FileInputStream("f://test.xls");
+            FileInputStream is2 = new FileInputStream("f://test2.xls");
             HSSFWorkbook workbook = new HSSFWorkbook(is);
-            System.out.println(workbook.getSheetAt(0).getLastRowNum());
+            HSSFWorkbook workbook2 = new HSSFWorkbook(is2);
 
-            byte[] b = deleteHeaderRows(workbook, 0, 3);
+            Row row = workbook.getSheetAt(0).getRow(5);
+            Row row2 = workbook2.getSheetAt(0).createRow(0);
+            Cell nCell = row2.createCell(0);
 
-            HSSFWorkbook workbook1 = new HSSFWorkbook(new ByteArrayInputStream(b));
-            System.out.println(workbook1.getSheetAt(0).getLastRowNum());
+            Cell cell = row.getCell(8);
+            cell.setCellType(CellType.STRING);
+            CellStyle cellStyle = cell.getCellStyle();
+            nCell.setCellValue(cell.getStringCellValue());
 
-//            FileOutputStream os = new FileOutputStream("d://test.xls");
-//            workbook.write(os);
-//            is.close();
-//            os.close();
+            CellStyle cellStyle2 = workbook2.createCellStyle();
+            cellStyle2.cloneStyleFrom(cellStyle);
+            nCell.setCellStyle(cellStyle2);
+
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }

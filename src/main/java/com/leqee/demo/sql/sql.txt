@@ -1,0 +1,8 @@
+#查询字符串中id不在数据库中的id集合
+#传入字符串形式:  '82,83,84,85,86,7785718'
+select g_id from
+(select id,@i:=@i+1,substring_index(substring_index('82,83,84,85,86,7785718',',',@i),',',-1) as g_id
+from strategic_goods_upper_lower_shelf_maintain,(select @i:=0) t
+where @i<length('82,83,84,85,86,7785718')-length(replace('82,83,84,85,86,7785718',',',''))+1
+) tt
+where not exists (select platform_goods_id from strategic_goods_upper_lower_shelf_maintain s where tt.g_id=s.platform_goods_id)
