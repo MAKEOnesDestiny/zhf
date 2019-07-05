@@ -18,6 +18,7 @@ public class JobCenterHttpServer {
                 protected void initChannel(SocketChannel ch) throws Exception {
                     //
                     ch.pipeline().addLast("http-decoder", new HttpRequestDecoder());
+                    //将对象组装为FullHttpRequest
                     ch.pipeline().addLast("http-aggregator", new HttpObjectAggregator(65536));
                     ch.pipeline().addLast("http-encoder", new HttpResponseEncoder());
                     ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());

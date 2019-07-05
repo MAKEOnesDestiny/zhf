@@ -27,6 +27,14 @@ public class JobCenterUrlHandler extends SimpleChannelInboundHandler<FullHttpReq
         }
     }
 
+    private void generateUrl(){
+
+    }
+
+    private void parseUrl(){
+        
+    }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(ExceptionPrintUtil.printStackTraceToString(cause));

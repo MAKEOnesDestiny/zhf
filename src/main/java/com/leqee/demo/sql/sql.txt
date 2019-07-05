@@ -6,3 +6,12 @@ from strategic_goods_upper_lower_shelf_maintain,(select @i:=0) t
 where @i<length('82,83,84,85,86,7785718')-length(replace('82,83,84,85,86,7785718',',',''))+1
 ) tt
 where not exists (select platform_goods_id from strategic_goods_upper_lower_shelf_maintain s where tt.g_id=s.platform_goods_id)
+
+
+#联表删除，同时删除两个表中的行
+delete t,i from `bi_strategic`.`strategic_data_mng_apply_map_table` t inner join `bi_strategic`.`strategic_data_mng_apply_map_index` i
+on t.id=i.table_id
+where t.id=90451891493798912123123
+
+#自动刷新更新时间
+`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
