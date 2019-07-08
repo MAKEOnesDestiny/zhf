@@ -19,6 +19,7 @@
     </properties>
 
     <dependencies>
+
         <!-- https://mvnrepository.com/artifact/org.msgpack/msgpack -->
         <dependency>
             <groupId>org.msgpack</groupId>
