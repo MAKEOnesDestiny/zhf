@@ -36,9 +36,9 @@ public class NettyClient {
                             ch.pipeline().addLast(new LoggingHandler());
                             //请求从下到上，响应从上到下
                             ch.pipeline().addLast(new NettyMessageDecoder(65536, 4, 4));
-                            ch.pipeline().addLast(new TestEncoder());
+//                            ch.pipeline().addLast(new TestEncoder());
                             ch.pipeline().addLast(new NettyMessageEncoder());
-//                            ch.pipeline().addLast(new ReadTimeoutHandler(7)); //7秒超时
+                            ch.pipeline().addLast(new ReadTimeoutHandler(7)); //7秒超时
                             ch.pipeline().addLast(new LoginAuthReqHandler());
                             ch.pipeline().addLast(new HeartBeatReqHandler());
                         }

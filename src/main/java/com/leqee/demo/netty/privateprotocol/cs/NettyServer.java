@@ -10,6 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 import java.net.InetSocketAddress;
 
@@ -27,7 +28,7 @@ public class NettyServer {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new NettyMessageDecoder(1024 * 1024, 4, 4));
                         ch.pipeline().addLast(new NettyMessageEncoder());
-
+                        ch.pipeline().addLast(new ReadTimeoutHandler(7));
                         ch.pipeline().addLast(new LoginAuthRespHandler());
                         ch.pipeline().addLast(new HeartBeatRespHandler());
                     }

@@ -6,6 +6,8 @@ import com.leqee.demo.netty.privateprotocol.bean.NettyMessage;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.Date;
+
 //服务端心跳handler
 public class HeartBeatRespHandler extends ChannelHandlerAdapter {
 
@@ -13,9 +15,9 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         NettyMessage message = (NettyMessage) msg;
         if (message.getHeader() != null && message.getHeader().getType() == MessageType.HEART_BEAT_REQ.getValue()) {
-            System.out.println("Server receive heart beat request from client:---->" + message);
+            System.out.println("[" + new Date() + "]Server receive heart beat request from client:---->" + message);
             NettyMessage nettyMessage = buildHeartBeatResp();
-            System.out.println("Server send heart beat response to client:---->" + nettyMessage);
+            System.out.println("[" + new Date() + "]Server send heart beat response to client:---->" + nettyMessage);
             ctx.writeAndFlush(nettyMessage);
         } else {
             ctx.fireChannelRead(msg);

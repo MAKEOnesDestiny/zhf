@@ -1,21 +1,36 @@
 package com.leqee.demo.netty.privateprotocol.handler;
 
+import com.leqee.demo.netty.marshalling.MarshallingCodeCFactory;
 import com.leqee.demo.netty.privateprotocol.bean.Header;
 import com.leqee.demo.netty.privateprotocol.bean.NettyMessage;
+import com.leqee.demo.netty.privateprotocol.handler.marshalling.MarshallingDecoderExt;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import org.msgpack.MessagePack;
+import io.netty.handler.codec.marshalling.MarshallingDecoder;
+import io.netty.handler.codec.marshalling.UnmarshallerProvider;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * LengthFieldBasedFrameDecoder解码器支持自动的TCP粘包和半包的处理
+ */
 public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
 
-    private MessagePack messagePack = new MessagePack();
+//    private MessagePack messagePack = new MessagePack();
+
+    MarshallingDecoderExt marshallingDecoderExt;
 
     public NettyMessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
         super(maxFrameLength, lengthFieldOffset, lengthFieldLength);
+        marshallingDecoderExt = (MarshallingDecoderExt) MarshallingCodeCFactory
+                .buildMarshingDecoder(new MarshallingCodeCFactory.MarshallingFactoryAdapter() {
+                    @Override
+                    public MarshallingDecoder getDecoder(UnmarshallerProvider provider) {
+                        return new MarshallingDecoderExt(provider);
+                    }
+                });
     }
 
     @Override
@@ -26,13 +41,13 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
         }
         NettyMessage message = new NettyMessage();
         Header header = new Header();
-        header.setCrcCode(in.readInt());
-        header.setLength(in.readInt());
-        header.setSessionId(in.readLong());
-        header.setType(in.readByte());
-        header.setPriority(in.readByte());
+        header.setCrcCode(frame.readInt());
+        header.setLength(frame.readInt());
+        header.setSessionId(frame.readLong());
+        header.setType(frame.readByte());
+        header.setPriority(frame.readByte());
 
-        int size = in.readInt();
+        int size = frame.readInt();
         if (size > 0) {
             //attachment
             Map<String, Object> attch = new HashMap<>();
@@ -41,22 +56,24 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
             String key = null;
             Object value = null;
             for (int i = 0; i < size; i++) {
-                keySize = in.readInt();
+                keySize = frame.readInt();
                 array = new byte[keySize];
-                in.readBytes(array);
+                frame.readBytes(array);
                 key = new String(array, "UTF-8");
 
-                keySize = in.readInt();
+                keySize = frame.readInt();
                 array = new byte[keySize];
-                in.readBytes(array);
-                value = messagePack.read(array);
+                frame.readBytes(array);
+//                value = messagePack.read(array);
+                marshallingDecoderExt.decode(ctx, frame);
                 attch.put(key, value);
             }
             header.setAttachment(attch);
         }
 
-        if (in.readableBytes() > 4) {
-            message.setBody(messagePack.read(in.array()));
+        if (frame.readableBytes() > 4) {
+//            message.setBody(messagePack.read(in.array()));
+            message.setBody(marshallingDecoderExt.decode(ctx, frame));
         }
         message.setHeader(header);
         return message;

@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.ScheduledFuture;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class HeartBeatReqHandler extends ChannelHandlerAdapter {
@@ -20,7 +21,7 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
             //返回resp,开启客户端心跳发送
             heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0L, 1000, TimeUnit.MILLISECONDS);
         } else if (message.getHeader() != null && message.getHeader().getType() == MessageType.HEART_BEAT_RESP.getValue()) {
-            System.out.println("Client receive server heart beat message : --->" + message);
+            System.out.println("[" + new Date() + "]Client receive server heart beat message : --->" + message);
         } else {
             ctx.fireChannelRead(msg);
         }
@@ -46,7 +47,7 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
         @Override
         public void run() {
             NettyMessage heartBeat = buildHeartBeat();
-            System.out.println("Client send heart beat message to server : --->" + heartBeat);
+            System.out.println("[" + new Date() + "]Client send heart beat message to server : --->" + heartBeat);
             ctx.writeAndFlush(heartBeat);
         }
 

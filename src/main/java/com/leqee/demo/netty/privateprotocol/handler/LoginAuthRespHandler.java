@@ -14,14 +14,14 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
     //登录信息缓存
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap<>();
 
-    private String[] whitekList = {"127.0.0.1", "172.22.16.190"};
+    private String[] whitekList = {"/127.0.0.1:8000", "/172.22.16.190:8000"};
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         NettyMessage nettyMessage = (NettyMessage) msg;
         if (nettyMessage.getHeader() != null && nettyMessage.getHeader().getType() == MessageType.LOGIN_REQ.getValue()) {
             String nodeIndex = ctx.channel().remoteAddress().toString();
-            if (nodeIndex.contains(nodeIndex)) {
+            if (nodeCheck.containsKey(nodeIndex)) {
                 ctx.writeAndFlush(buildResponse((byte) -1));  //重复登陆
             } else {
                 for (String w : whitekList) {
@@ -31,6 +31,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
                         return;
                     }
                 }
+                ctx.writeAndFlush(buildResponse((byte) -2)); //如果不在白名单内,直接拒绝登录
             }
         } else {
             ctx.fireChannelRead(msg);
@@ -41,6 +42,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
         NettyMessage nettyMessage = new NettyMessage();
         Header header = new Header();
         header.setType(MessageType.LOGIN_RESP.getValue());
+        nettyMessage.setHeader(header);
         nettyMessage.setBody(result);
         return nettyMessage;
     }
