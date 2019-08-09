@@ -21,6 +21,7 @@ public abstract class JSONUtil {
         if (tClass == null) throw new IllegalArgumentException("tClass can't be null");
         //不支持数组类型
         if (tClass.getName().startsWith("[")) throw new UnsupportedOperationException("Array object is not supported");
+        tClass = adaptPrimitive(tClass);
         List resultList = new ArrayList();
         findAllObjectRecursiveFromList(key, list, resultList, tClass);
         return resultList;
