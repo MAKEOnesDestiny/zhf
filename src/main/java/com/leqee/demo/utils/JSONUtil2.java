@@ -1,16 +1,14 @@
 package com.leqee.demo.utils;
 
-import com.sun.jmx.snmp.defaults.DefaultPaths;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class JSONUtil {
+@SuppressWarnings("all")
+public abstract class JSONUtil2 {
 
     @Data
 //    @Builder
@@ -117,6 +115,10 @@ public abstract class JSONUtil {
             return searchMap.getMap();
         }
     }
+
+
+
+
 
     public static <T> List<T> findAllObject(SearchMap map, Goal goal, Path path) {
         return (List<T>) path.search(map, goal);
@@ -297,6 +299,5 @@ public abstract class JSONUtil {
         }
         return clazz;
     }
-
 
 }
