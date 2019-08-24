@@ -1,5 +1,6 @@
 package com.leqee.demo.controller;
 
+import com.leqee.demo.bean.TestBean;
 import lombok.Builder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,27 @@ public class TestController {
         int a = 10;
         Object aa = a;
         return null;
+    }
+
+    @ResponseBody
+    @RequestMapping("/test2")
+    public String test2(TestBean testBean){
+        System.out.println(testBean);
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping("/test3")
+    public String test3(@MyModelAttribute TestBean testBean){
+        System.out.println(testBean);
+        return "123";
+    }
+
+    @ResponseBody
+    @RequestMapping("/test4")
+    public String test4(TestBean testBean){
+        System.out.println(testBean);
+        return "123";
     }
 
 }
