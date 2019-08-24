@@ -2,6 +2,7 @@ package com.leqee.demo.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.leqee.demo.bean.TestBean;
 import com.leqee.demo.utils.JSONUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +51,13 @@ public class JSONController {
         return list;*/
         return "aaa";
     }
+
+    @SuppressOutput
+    @RequestMapping(value = "/test/processor")
+    public Object processor(@MyModelAttribute TestBean jsonArray) {
+        return "aaa";
+    }
+
 
     public static void main(String[] args) {
         Map map = new HashMap();

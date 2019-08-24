@@ -16,7 +16,7 @@ public class MyResolver implements HandlerMethodArgumentResolver, HandlerMethodR
 
     private ServletModelAttributeMethodProcessor delegate = new ServletModelAttributeMethodProcessor(false);
 
-    private ThreadLocal<Boolean> processed = new ThreadLocal<Boolean>(){
+    static final ThreadLocal<Boolean> processed = new ThreadLocal<Boolean>() {
         @Override
         protected Boolean initialValue() {
             return false;
@@ -38,12 +38,12 @@ public class MyResolver implements HandlerMethodArgumentResolver, HandlerMethodR
             JSONObject resultJ = new JSONObject();
             resultJ.put("code", -1);
             resultJ.put("message", "错误的数据123");
-
             response.setStatus(200);
             response.setContentType("application/json;charset=UTF-8");
             response.getOutputStream().write(resultJ.toString().getBytes("UTF-8"));
 //            response.setContentLength(response.toString().getBytes("UTF-8").length);
             response.flushBuffer();
+            processed.set(true);
         }
         return obj;
     }
