@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 代理模式实现非重复
  */
-public class ExclusiveArrayList<E> extends AbstractList<E> {
+public class ExclusiveArrayList<E> extends AbstractList<E> implements ExclusiveList<E> {
 
     //note: not thread-safe
     private List<E> target;
@@ -14,6 +14,7 @@ public class ExclusiveArrayList<E> extends AbstractList<E> {
         target = new ArrayList();
     }
 
+    @Override
     public boolean add(E e, RepeatStrategic<E> strategic) {
         for (E s : target) {
             if (strategic.isEqual(e, s)) {
@@ -24,6 +25,7 @@ public class ExclusiveArrayList<E> extends AbstractList<E> {
         return true;
     }
 
+    @Override
     public List reset() {
         target = new ArrayList<>();
         return this;
@@ -39,16 +41,5 @@ public class ExclusiveArrayList<E> extends AbstractList<E> {
         return target.size();
     }
 
-    public interface RepeatStrategic<E> {
-
-        default boolean isEqual(E e1, E e2) {
-            return e1 == null ? false : e1.equals(e2);
-        }
-
-        default void process(E e) throws Exception {
-            throw new IllegalArgumentException("Repeat element:" + e);
-        }
-
-    }
 
 }
